@@ -80,13 +80,14 @@
 
                     <div>
                         <label class="form-label" for="organization">
-                            Organisasi / UKM
-                            <span style="font-weight: 400; color: var(--ink-500);">(opsional)</span>
+                            UKM
+                            <span style="font-weight: 400; color: var(--ink-500);"></span>
                         </label>
                         <input id="organization" type="text" name="organization"
                                class="form-input @error('organization') border-red-400 @enderror"
                                value="{{ old('organization', $user->organization) }}"
-                               placeholder="Contoh: SRE Telkom University">
+                               placeholder=""
+                               required>
                         @error('organization')
                             <p class="form-error">{{ $message }}</p>
                         @enderror
@@ -95,12 +96,13 @@
                     <div>
                         <label class="form-label" for="position">
                             Jabatan
-                            <span style="font-weight: 400; color: var(--ink-500);">(opsional)</span>
+                            <span style="font-weight: 400; color: var(--ink-500);"></span>
                         </label>
                         <input id="position" type="text" name="position"
                                class="form-input @error('position') border-red-400 @enderror"
                                value="{{ old('position', $user->position) }}"
-                               placeholder="Contoh: Ketua Pelaksana">
+                               placeholder="Contoh: Ketua Pelaksana"
+                               required>
                         @error('position')
                             <p class="form-error">{{ $message }}</p>
                         @enderror
@@ -109,12 +111,13 @@
                     <div>
                         <label class="form-label" for="phone">
                             No. Telepon
-                            <span style="font-weight: 400; color: var(--ink-500);">(opsional)</span>
+                            <span style="font-weight: 400; color: var(--ink-500);"></span>
                         </label>
                         <input id="phone" type="text" name="phone"
                                class="form-input @error('phone') border-red-400 @enderror"
                                value="{{ old('phone', $user->phone) }}"
-                               placeholder="Contoh: 08123456789">
+                               placeholder=""
+                               required>
                         @error('phone')
                             <p class="form-error">{{ $message }}</p>
                         @enderror
@@ -151,7 +154,7 @@
                                    :type="show ? 'text' : 'password'"
                                    name="current_password"
                                    class="form-input @error('current_password') border-red-400 @enderror"
-                                   placeholder="Masukkan kata sandi saat ini"
+                                   placeholder=""
                                    style="padding-right: 44px;">
                             <button type="button" @click="show = !show"
                                     style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--ink-500); padding:4px;">
@@ -189,7 +192,7 @@
                                    :type="show ? 'text' : 'password'"
                                    name="password_confirmation"
                                    class="form-input"
-                                   placeholder="Ulangi kata sandi baru"
+                                   placeholder=""
                                    style="padding-right: 44px;">
                             <button type="button" @click="show = !show"
                                     style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--ink-500); padding:4px;">

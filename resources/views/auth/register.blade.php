@@ -18,23 +18,20 @@
             <input id="name" type="text" name="name"
                    class="form-input @error('name') border-red-400 @enderror"
                    value="{{ old('name') }}"
-                   placeholder="Masukkan nama lengkap Anda"
                    required autofocus autocomplete="name">
             @error('name')
                 <p class="form-error">{{ $message }}</p>
             @enderror
         </div>
 
-        {{-- Organisasi / UKM --}}
+        {{-- UKM --}}
         <div>
-            <label class="form-label" for="organization">
-                Organisasi / UKM
-                <span style="font-weight: 400; color: var(--ink-500);">(opsional)</span>
-            </label>
+            <label class="form-label" for="organization ">UKM <span style="color: var(--telkom-red);">*</span></label>
             <input id="organization" type="text" name="organization"
                    class="form-input @error('organization') border-red-400 @enderror"
                    value="{{ old('organization') }}"
-                   placeholder="Contoh: SRE Telkom University">
+                   placeholder=""
+                   required>
             @error('organization')
                 <p class="form-error">{{ $message }}</p>
             @enderror
@@ -42,14 +39,12 @@
 
         {{-- Jabatan --}}
         <div>
-            <label class="form-label" for="position">
-                Jabatan
-                <span style="font-weight: 400; color: var(--ink-500);">(opsional)</span>
-            </label>
+            <label class="form-label" for="position">Jabatan <span style="color: var(--telkom-red);">*</span></label>
             <input id="position" type="text" name="position"
                    class="form-input @error('position') border-red-400 @enderror"
                    value="{{ old('position') }}"
-                   placeholder="Contoh: Ketua Pelaksana">
+                   placeholder=""
+                   required>
             @error('position')
                 <p class="form-error">{{ $message }}</p>
             @enderror
@@ -61,7 +56,6 @@
             <input id="email" type="email" name="email"
                    class="form-input @error('email') border-red-400 @enderror"
                    value="{{ old('email') }}"
-                   placeholder="nama@email.com"
                    required autocomplete="username">
             @error('email')
                 <p class="form-error">{{ $message }}</p>
@@ -76,7 +70,7 @@
                        :type="showPass ? 'text' : 'password'"
                        name="password"
                        class="form-input @error('password') border-red-400 @enderror"
-                       placeholder="Minimal 8 karakter"
+                       placeholder=""
                        required autocomplete="new-password"
                        style="padding-right: 44px;">
                 <button type="button"
@@ -99,7 +93,7 @@
                        :type="showPass2 ? 'text' : 'password'"
                        name="password_confirmation"
                        class="form-input"
-                       placeholder="Ulangi kata sandi"
+                       placeholder=""
                        required autocomplete="new-password"
                        style="padding-right: 44px;">
                 <button type="button"

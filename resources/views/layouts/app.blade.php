@@ -86,12 +86,12 @@
                     <span>Dashboard</span>
                 </a>
 
-                {{-- Generate Laporan (expandable) --}}
+                {{-- Generate Dokumen (expandable) --}}
                 <div>
                     <button @click="openLaporan = !openLaporan"
                             class="nav-item {{ request()->routeIs('proposal.*', 'lpj.*') ? 'active' : '' }}">
                         <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i>
-                        <span class="flex-1 text-left">Generate Laporan</span>
+                        <span class="flex-1 text-left">Generate Dokumen</span>
                         <i data-lucide="chevron-down" class="w-4 h-4 shrink-0 transition-transform duration-200"
                            :class="{ 'rotate-180': openLaporan }"></i>
                     </button>
@@ -104,11 +104,25 @@
                                 Generate Proposal
                             </span>
                         </a>
+                        <a href="{{ route('proposal.index') }}"
+                           class="nav-sub-item {{ request()->routeIs('proposal.index') ? 'active' : '' }}">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                                Daftar Proposal Saya
+                            </span>
+                        </a>
                         <a href="{{ route('lpj.create') }}"
                            class="nav-sub-item {{ request()->routeIs('lpj.create') ? 'active' : '' }}">
                             <span class="flex items-center gap-2">
                                 <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
                                 Generate LPJ
+                            </span>
+                        </a>
+                        <a href="{{ route('lpj.index') }}"
+                           class="nav-sub-item {{ request()->routeIs('lpj.index') ? 'active' : '' }}">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                                Daftar LPJ Saya
                             </span>
                         </a>
                     </div>

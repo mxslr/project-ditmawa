@@ -32,7 +32,7 @@
             <input id="email" type="email" name="email"
                    class="form-input @error('email') border-red-400 @enderror"
                    value="{{ old('email') }}"
-                   placeholder="nama@email.com"
+                   placeholder=""
                    required autofocus autocomplete="username">
             @error('email')
                 <p class="form-error">{{ $message }}</p>
@@ -47,7 +47,7 @@
                        :type="showPass ? 'text' : 'password'"
                        name="password"
                        class="form-input @error('password') border-red-400 @enderror"
-                       placeholder="Masukkan kata sandi"
+                       placeholder=""
                        required autocomplete="current-password"
                        style="padding-right: 44px;">
                 <button type="button"
