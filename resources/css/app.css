@@ -1,0 +1,187 @@
+/* ===== Google Fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== CSS Custom Properties (Telkom Brand) ===== */
+:root {
+  --telkom-red:        #E03A3E;
+  --telkom-red-dark:   #B82A2E;
+  --telkom-red-light:  #F5B5B7;
+  --telkom-gray:       #58595B;
+  --ink-900:           #1A1A1A;
+  --ink-700:           #343434;
+  --ink-500:           #666666;
+  --ink-300:           #BDBDBD;
+  --surface:           #FFFFFF;
+  --surface-alt:       #F8F8F8;
+  --surface-muted:     #EAEAEA;
+  --sidebar-width:     260px;
+  --topbar-height:     64px;
+  --radius-card:       12px;
+  --shadow-card:       0 2px 8px rgba(0,0,0,0.06);
+  --transition:        all 0.2s ease-out;
+}
+
+/* ===== Base ===== */
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-700);
+  background-color: var(--surface-alt);
+}
+
+/* ===== Page Fade-in ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter {
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+/* ===== Sidebar nav items ===== */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-700);
+  transition: var(--transition);
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+.nav-item:hover {
+  background-color: var(--surface-alt);
+  color: var(--ink-900);
+}
+.nav-item.active {
+  background-color: var(--telkom-red-light);
+  color: var(--telkom-red);
+  border-left: 4px solid var(--telkom-red);
+  padding-left: 12px;
+}
+.nav-sub-item {
+  display: block;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  color: var(--ink-500);
+  border-radius: 6px;
+  transition: var(--transition);
+  text-decoration: none;
+}
+.nav-sub-item:hover {
+  background-color: var(--surface-alt);
+  color: var(--telkom-red);
+}
+.nav-sub-item.active {
+  color: var(--telkom-red);
+  font-weight: 600;
+}
+
+/* ===== Tombol Primer (pill shape) ===== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--telkom-red);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background-color: var(--telkom-red-dark);
+  transform: scale(1.02);
+  box-shadow: 0 4px 14px rgba(224,58,62,0.35);
+  color: #fff;
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: var(--telkom-red);
+  padding: 10px 24px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--telkom-red);
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background-color: var(--telkom-red);
+  color: #fff;
+}
+
+/* ===== Card ===== */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+
+/* ===== Form input ===== */
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--ink-300);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ink-700);
+  background: var(--surface);
+  transition: var(--transition);
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--telkom-red);
+  box-shadow: 0 0 0 3px rgba(224,58,62,0.12);
+}
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-700);
+  margin-bottom: 6px;
+}
+.form-error {
+  font-size: 12px;
+  color: #D32F2F;
+  margin-top: 4px;
+}
+
+/* ===== Flash messages ===== */
+.alert-success {
+  background: #E8F5E9;
+  border: 1px solid #A5D6A7;
+  color: #2E7D32;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.alert-error {
+  background: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  color: #C62828;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+}
