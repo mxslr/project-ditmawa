@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LpjController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProposalController;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/proposal/{proposal}/generate', [ProposalController::class, 'generatePdf'])
         ->name('proposal.generate');
 
-    // LPJ — Phase 3
-    Route::get('/lpj/create', fn() => abort(503, 'Segera hadir — Phase 3'))->name('lpj.create');
-    Route::get('/lpj', fn() => abort(503, 'Segera hadir — Phase 3'))->name('lpj.index');
+    // LPJ routes
+    Route::resource('lpj', LpjController::class);
+    Route::get('/lpj/{lpj}/generate', [LpjController::class, 'generatePdf'])
+        ->name('lpj.generate');
+    Route::post('/lpj/{lpj}/dana-keluar', [LpjController::class, 'saveDanaKeluar'])
+        ->name('lpj.dana-keluar.save');
 });
 
 require __DIR__.'/auth.php';
