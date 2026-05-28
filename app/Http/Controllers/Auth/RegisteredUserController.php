@@ -36,6 +36,14 @@ class RegisteredUserController extends Controller
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
             'organization' => ['nullable', 'string', 'max:255'],
             'position'     => ['nullable', 'string', 'max:255'],
+        ], [
+            'name.required'      => 'Nama lengkap wajib diisi.',
+            'email.required'     => 'Email wajib diisi.',
+            'email.email'        => 'Format email tidak valid.',
+            'email.unique'       => 'Email ini sudah digunakan, coba gunakan email lain.',
+            'email.lowercase'    => 'Email harus ditulis dengan huruf kecil.',
+            'password.required'  => 'Kata sandi wajib diisi.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak sesuai.',
         ]);
 
         $user = User::create([
