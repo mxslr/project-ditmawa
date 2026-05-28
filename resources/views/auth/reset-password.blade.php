@@ -1,39 +1,83 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+@extends('layouts.guest')
+@section('title', 'Reset Password')
 
-        <!-- Password Reset Token -->
+@section('content')
+    <h2 style="font-size: 24px; font-weight: 700; color: var(--ink-900); margin-bottom: 8px;">
+        Buat Password Baru
+    </h2>
+    <p style="font-size: 14px; color: var(--ink-500); margin-bottom: 32px;">
+        Pastikan password baru kamu cukup kuat dan mudah diingat.
+    </p>
+
+    <form method="POST" action="{{ route('password.store') }}" class="space-y-5" novalidate>
+        @csrf
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Email Address -->
+        {{-- Email --}}
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <label class="form-label" for="email">Alamat Email</label>
+            <input id="email" type="email" name="email"
+                   class="form-input @error('email') border-red-400 @enderror"
+                   value="{{ old('email', $request->email) }}"
+                   placeholder="contoh@email.com"
+                   required autofocus autocomplete="username">
+            @error('email')
+                <p class="field-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>{{ $message }}</span>
+                </p>
+            @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        {{-- Password Baru --}}
+        <div x-data="{ showPass: false }">
+            <label class="form-label" for="password">Password Baru</label>
+            <div class="relative">
+                <input id="password"
+                       :type="showPass ? 'text' : 'password'"
+                       name="password"
+                       class="form-input @error('password') border-red-400 @enderror"
+                       placeholder="Minimal 8 karakter"
+                       required autocomplete="new-password"
+                       style="padding-right: 44px;">
+                <button type="button"
+                        @click="showPass = !showPass"
+                        class="absolute right-3 top-1/2 -translate-y-1/2"
+                        style="background:none; border:none; cursor:pointer; color: var(--ink-500); padding: 4px;">
+                    <i :data-lucide="showPass ? 'eye-off' : 'eye'" class="w-4 h-4"></i>
+                </button>
+            </div>
+            @error('password')
+                <p class="field-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>{{ $message }}</span>
+                </p>
+            @enderror
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        {{-- Konfirmasi Password --}}
+        <div x-data="{ showConfirm: false }">
+            <label class="form-label" for="password_confirmation">Konfirmasi Password Baru</label>
+            <div class="relative">
+                <input id="password_confirmation"
+                       :type="showConfirm ? 'text' : 'password'"
+                       name="password_confirmation"
+                       class="form-input"
+                       placeholder="Ulangi password baru"
+                       required autocomplete="new-password"
+                       style="padding-right: 44px;">
+                <button type="button"
+                        @click="showConfirm = !showConfirm"
+                        class="absolute right-3 top-1/2 -translate-y-1/2"
+                        style="background:none; border:none; cursor:pointer; color: var(--ink-500); padding: 4px;">
+                    <i :data-lucide="showConfirm ? 'eye-off' : 'eye'" class="w-4 h-4"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
+        {{-- Submit --}}
+        <button type="submit" class="btn-primary w-full justify-center" style="width: 100%; justify-content: center; margin-top: 8px;">
+            Simpan Password Baru
+        </button>
     </form>
-</x-guest-layout>
+@endsection
