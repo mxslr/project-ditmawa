@@ -1,82 +1,89 @@
-<p class="section-title">P. Lembar Pengesahan</p>
+<p style="font-weight:bold; font-size:12pt; margin: 16pt 0 10pt 0;">P. Lembar Pengesahan</p>
 
-{{-- Baris 1: 3 kolom --}}
-<table class="signature-grid no-border" style="margin-top:16pt; width:100%;">
-    <tbody>
-        <tr>
-            <td class="text-center" style="width:33.33%;">President {{ $proposal->penyelenggara ?? 'UKM' }}</td>
-            <td class="text-center" style="width:33.33%;">Sekretaris</td>
-            <td class="text-center" style="width:33.33%;">Ketua Pelaksana</td>
-        </tr>
-        <tr>
-            <td><span class="signature-box"></span></td>
-            <td><span class="signature-box"></span></td>
-            <td><span class="signature-box"></span></td>
-        </tr>
-        <tr>
-            <td class="text-center">
-                <span class="signature-name bold">{{ $proposal->president_ukm_nama }}</span><br>
-                NIM. {{ $proposal->president_ukm_nim }}
-            </td>
-            <td class="text-center">
-                <span class="signature-name bold">{{ $proposal->sekretaris_nama }}</span><br>
-                NIM. {{ $proposal->sekretaris_nim }}
-            </td>
-            <td class="text-center">
-                <span class="signature-name bold">{{ $proposal->ketua_pelaksana_nama }}</span><br>
-                NIM. {{ $proposal->ketua_pelaksana_nim }}
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div style="page-break-inside: avoid;">
+<table style="width:100%; border:none; border-collapse: collapse;">
 
-{{-- Pembina --}}
-<table class="signature-grid no-border" style="margin-top:16pt; width:100%;">
-    <tbody>
-        <tr>
-            <td style="width:33.33%;"></td>
-            <td class="text-center" style="width:33.33%;">Pembina</td>
-            <td style="width:33.33%;"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><span class="signature-box"></span></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="text-center">
-                <span class="signature-name bold">{{ $proposal->pembina_nama }}</span><br>
-                NIP. {{ $proposal->pembina_nip }}
-            </td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
+    {{-- Label jabatan --}}
+    <tr>
+        <td style="border:none; text-align:center; width:33%; font-size:10.5pt; padding:0 4pt 3pt 4pt;">
+            President {{ $proposal->penyelenggara ?? 'UKM' }}
+        </td>
+        <td style="border:none; text-align:center; width:33%; font-size:10.5pt; padding:0 4pt 3pt 4pt;">
+            Sekretaris {{ $proposal->penyelenggara ?? 'UKM' }}
+        </td>
+        <td style="border:none; text-align:center; width:33%; font-size:10.5pt; padding:0 4pt 3pt 4pt;">
+            Ketua Pelaksana
+        </td>
+    </tr>
+    {{-- Ruang TTD --}}
+    <tr>
+        <td style="border:none; height:55pt;">&nbsp;</td>
+        <td style="border:none; height:55pt;">&nbsp;</td>
+        <td style="border:none; height:55pt;">&nbsp;</td>
+    </tr>
+    {{-- Nama & NIM --}}
+    <tr>
+        <td style="border:none; text-align:center; font-size:10.5pt; padding:0 4pt;">
+            <strong>{{ $proposal->president_ukm_nama }}</strong><br>
+            NIM. {{ $proposal->president_ukm_nim }}
+        </td>
+        <td style="border:none; text-align:center; font-size:10.5pt; padding:0 4pt;">
+            <strong>{{ $proposal->sekretaris_nama }}</strong><br>
+            NIM. {{ $proposal->sekretaris_nim }}
+        </td>
+        <td style="border:none; text-align:center; font-size:10.5pt; padding:0 4pt;">
+            <strong>{{ $proposal->ketua_pelaksana_nama }}</strong><br>
+            NIM. {{ $proposal->ketua_pelaksana_nim }}
+        </td>
+    </tr>
 
-{{-- Direktur --}}
-<table class="signature-grid no-border" style="margin-top:12pt; width:100%;">
-    <tbody>
-        <tr>
-            <td style="width:33.33%;"></td>
-            <td class="text-center" style="width:33.33%;">
-                Menyetujui,<br>
-                Direktur Kemahasiswaan, Karier dan Alumni
-            </td>
-            <td style="width:33.33%;"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><span class="signature-box"></span></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="text-center">
-                <span class="signature-name bold">{{ $proposal->direktur_nama }}</span><br>
-                NIP. {{ $proposal->direktur_nip }}
-            </td>
-            <td></td>
-        </tr>
-    </tbody>
+    {{-- Spacer --}}
+    <tr><td colspan="3" style="border:none; height:8pt;"></td></tr>
+
+    {{-- Pembina --}}
+    <tr>
+        <td style="border:none;">&nbsp;</td>
+        <td style="border:none; text-align:center; font-size:10.5pt; padding:0 4pt 3pt 4pt;">Pembina</td>
+        <td style="border:none;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="border:none;">&nbsp;</td>
+        <td style="border:none; height:55pt;">&nbsp;</td>
+        <td style="border:none;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="border:none;">&nbsp;</td>
+        <td style="border:none; text-align:center; font-size:10.5pt; padding:0 4pt;">
+            <strong>{{ $proposal->pembina_nama }}</strong><br>
+            NIP. {{ $proposal->pembina_nip }}
+        </td>
+        <td style="border:none;">&nbsp;</td>
+    </tr>
+
+    {{-- Spacer --}}
+    <tr><td colspan="3" style="border:none; height:8pt;"></td></tr>
+
+    {{-- Direktur --}}
+    <tr>
+        <td style="border:none;">&nbsp;</td>
+        <td style="border:none; text-align:center; font-size:10.5pt; padding:0 4pt 3pt 4pt;">
+            Menyetujui,<br>Direktur Kemahasiswaan, Karier dan Alumni
+        </td>
+        <td style="border:none;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="border:none;">&nbsp;</td>
+        <td style="border:none; height:55pt;">&nbsp;</td>
+        <td style="border:none;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="border:none;">&nbsp;</td>
+        <td style="border:none; text-align:center; font-size:10.5pt; padding:0 4pt;">
+            <strong>{{ $proposal->direktur_nama }}</strong><br>
+            NIP. {{ $proposal->direktur_nip }}
+        </td>
+        <td style="border:none;">&nbsp;</td>
+    </tr>
+
 </table>
+</div>

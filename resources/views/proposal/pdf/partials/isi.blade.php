@@ -37,10 +37,7 @@
     <tr>
         <td style="padding:1pt 0;">Waktu</td>
         <td style="padding:1pt 0;">:
-            {{ $proposal->waktu_mulai ? \Carbon\Carbon::parse($proposal->waktu_mulai)->format('H:i') : '-' }}
-            –
-            {{ $proposal->waktu_selesai ? \Carbon\Carbon::parse($proposal->waktu_selesai)->format('H:i') : '-' }}
-            WIB
+            {{ $proposal->waktu_mulai ? \Carbon\Carbon::parse($proposal->waktu_mulai)->format('H.i') : '-' }}-{{ $proposal->waktu_selesai ? \Carbon\Carbon::parse($proposal->waktu_selesai)->format('H.i') : '-' }} WIB
         </td>
     </tr>
     <tr>
@@ -81,10 +78,16 @@
 <table>
     <thead>
         <tr>
-            <th style="width:70pt;">Waktu Mulai</th>
-            <th style="width:70pt;">Waktu Selesai</th>
-            <th style="width:70pt;">Durasi (mnt)</th>
-            <th>Aktivitas</th>
+            <th colspan="4" style="background-color:#E03A3E; color:#fff; text-align:center; font-weight:bold;">{{ $proposal->nama_kegiatan }}</th>
+        </tr>
+        <tr>
+            <th colspan="4" style="background-color:#E03A3E; color:#fff; text-align:center; font-weight:bold;">{{ $proposal->tanggal_mulai->locale('id')->translatedFormat('l') }}, {{ $proposal->tanggal_pelaksanaan }}</th>
+        </tr>
+        <tr>
+            <th style="text-align:center;">Start</th>
+            <th style="text-align:center;">End</th>
+            <th style="text-align:center;">Duration</th>
+            <th>Activities</th>
         </tr>
     </thead>
     <tbody>
@@ -100,40 +103,54 @@
 </table>
 @endif
 
-{{-- K. Analisis Risiko --}}
+{{-- K. Analisis Resiko --}}
 <p class="section-title">K. Analisis Resiko</p>
-<p style="margin-bottom:4pt;">
-    Nama Kegiatan &nbsp;&nbsp;: {{ $proposal->nama_kegiatan }}<br>
-    Ketua Kegiatan &nbsp;&nbsp;: {{ $proposal->ketua_pelaksana_nama }}<br>
-    Dosen Pembina &nbsp;&nbsp;&nbsp;: {{ $proposal->pembina_nama }}<br>
-    Lokasi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $proposal->tempat_kegiatan }}<br>
-    Tanggal Dibuat &nbsp;&nbsp;: {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}
+<p style="font-size: 11pt; margin-bottom: 8pt;">
+    Nama Kegiatan &nbsp;&nbsp; : {{ $proposal->nama_kegiatan }}<br>
+    Ketua Kegiatan &nbsp;&nbsp; : {{ $proposal->ketua_pelaksana_nama }}<br>
+    Dosen Pembina &nbsp;&nbsp;&nbsp; : {{ $proposal->pembina_nama }}<br>
+    Lokasi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $proposal->tempat_kegiatan }}<br>
+    Tanggal Dibuat &nbsp;&nbsp; : {{ now()->locale('id')->translatedFormat('j F Y') }}
 </p>
+
 @if($proposal->risks->count() > 0)
-<table style="font-size:9pt;">
+<table style="width:100%; border-collapse: collapse; table-layout: fixed; font-size: 9pt; word-wrap: break-word;">
+    <colgroup>
+        <col style="width:4%">
+        <col style="width:14%">
+        <col style="width:14%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:28%">
+        <col style="width:16%">
+    </colgroup>
     <thead>
-        <tr>
-            <th style="width:4%;">No</th>
-            <th style="width:13%;">Uraian Kegiatan</th>
-            <th style="width:14%;">Identifikasi Bahaya</th>
-            <th style="width:8%;">Peluang</th>
-            <th style="width:8%;">Akibat</th>
-            <th style="width:9%;">Tingkat Risiko</th>
-            <th style="width:22%;">Pengendalian Risiko</th>
-            <th style="width:14%;">Penanggung Jawab</th>
+        <tr style="background-color:#f0f0f0;">
+            <th rowspan="2" style="border:1px solid #000; padding:3pt 4pt; text-align:center; vertical-align:middle; font-size:9pt;">No</th>
+            <th rowspan="2" style="border:1px solid #000; padding:3pt 4pt; text-align:center; vertical-align:middle; font-size:9pt;">Uraian Kegiatan</th>
+            <th rowspan="2" style="border:1px solid #000; padding:3pt 4pt; text-align:center; vertical-align:middle; font-size:9pt;">Identifikasi Bahaya</th>
+            <th colspan="2" style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt;">Penilaian Risiko</th>
+            <th rowspan="2" style="border:1px solid #000; padding:3pt 4pt; text-align:center; vertical-align:middle; font-size:9pt;">Tingkat Risiko</th>
+            <th rowspan="2" style="border:1px solid #000; padding:3pt 4pt; text-align:center; vertical-align:middle; font-size:9pt;">Pengendalian Risiko</th>
+            <th rowspan="2" style="border:1px solid #000; padding:3pt 4pt; text-align:center; vertical-align:middle; font-size:9pt;">Penanggung Jawab</th>
+        </tr>
+        <tr style="background-color:#f0f0f0;">
+            <th style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt;">Peluang/<br>kemungkinan</th>
+            <th style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt;">Akibat/<br>keparahan</th>
         </tr>
     </thead>
     <tbody>
         @foreach($proposal->risks as $i => $risk)
         <tr>
-            <td class="text-center">{{ $i + 1 }}</td>
-            <td>{{ $risk->uraian_kegiatan }}</td>
-            <td>{{ $risk->identifikasi_bahaya }}</td>
-            <td class="text-center">{{ $risk->peluang }}</td>
-            <td class="text-center">{{ $risk->akibat }}</td>
-            <td class="text-center">{{ $risk->tingkat_risiko }}</td>
-            <td>{{ $risk->pengendalian_risiko }}</td>
-            <td class="text-center">{{ $risk->penanggung_jawab }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt;">{{ $i + 1 }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; font-size:9pt; word-wrap:break-word;">{{ $risk->uraian_kegiatan }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; font-size:9pt; word-wrap:break-word;">{{ $risk->identifikasi_bahaya }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt;">{{ $risk->peluang }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt;">{{ $risk->akibat }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt;">{{ $risk->tingkat_risiko }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; font-size:9pt; word-wrap:break-word;">{{ $risk->pengendalian_risiko }}</td>
+            <td style="border:1px solid #000; padding:3pt 4pt; text-align:center; font-size:9pt; word-wrap:break-word;">{{ $risk->penanggung_jawab }}</td>
         </tr>
         @endforeach
     </tbody>
@@ -177,9 +194,10 @@
 <p class="section-title">N. Rencana Anggaran Biaya</p>
 
 @php
-    $pemasukan   = $proposal->budgets->where('jenis', 'pemasukan');
-    $pengeluaran = $proposal->budgets->where('jenis', 'pengeluaran');
-    $sumberDana  = $proposal->budgets->where('jenis', 'sumber_dana');
+    // ->values() me-reset key koleksi ke 0,1,2,... agar penomoran ($i + 1) restart dari 1 tiap tabel
+    $pemasukan   = $proposal->budgets->where('jenis', 'pemasukan')->values();
+    $pengeluaran = $proposal->budgets->where('jenis', 'pengeluaran')->values();
+    $sumberDana  = $proposal->budgets->where('jenis', 'sumber_dana')->values();
 @endphp
 
 <p class="bold">1. Pemasukan</p>
@@ -201,15 +219,26 @@
 </table>
 
 <p class="bold">2. Pengeluaran</p>
-<table style="font-size:9.5pt;">
+<table style="font-size:9.5pt; table-layout:fixed; word-wrap:break-word;">
+    <colgroup>
+        <col style="width:6%">    {{-- No --}}
+        <col style="width:38%">   {{-- Keterangan --}}
+        <col style="width:13%">   {{-- Kuantitas --}}
+        <col style="width:12%">   {{-- Satuan --}}
+        <col style="width:16%">   {{-- Harga --}}
+        <col style="width:15%">   {{-- Total --}}
+    </colgroup>
     <thead>
         <tr>
-            <th style="width:5%;">No.</th>
-            <th>Keterangan</th>
-            <th style="width:50pt;">Kuantitas</th>
-            <th style="width:50pt;">Satuan</th>
-            <th style="width:100pt;">Harga Satuan (Rp)</th>
-            <th style="width:100pt;">Total (Rp)</th>
+            <th rowspan="2" style="text-align:center; vertical-align:middle;">No.</th>
+            <th rowspan="2" style="text-align:center; vertical-align:middle;">Keterangan</th>
+            <th colspan="3" style="text-align:center;">Jumlah</th>
+            <th rowspan="2" style="text-align:center; vertical-align:middle;">Total</th>
+        </tr>
+        <tr>
+            <th style="text-align:center;">Kuantitas</th>
+            <th style="text-align:center;">Satuan</th>
+            <th style="text-align:center;">Harga</th>
         </tr>
     </thead>
     <tbody>
@@ -247,6 +276,8 @@
         </tr>
     </tbody>
 </table>
+
+<div class="page-break"></div>
 
 {{-- O. Penutup --}}
 <p class="section-title">O. Penutup</p>

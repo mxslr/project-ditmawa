@@ -4,57 +4,73 @@
     <meta charset="UTF-8">
     <title>Proposal - {{ $proposal->nama_kegiatan }}</title>
     <style>
-        @page { margin: 2.5cm 2.5cm 2.5cm 3cm; }
+        @page {
+            margin: 2cm 2.5cm 2cm 3cm;
+        }
         * { box-sizing: border-box; }
         body {
-            font-family: "DejaVu Serif", serif;
-            font-size: 11pt;
-            line-height: 1.6;
-            color: #000000;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #000;
             margin: 0; padding: 0;
         }
-        h1 { font-size: 14pt; font-weight: bold; text-align: center; margin: 0 0 6pt 0; }
-        h2 { font-size: 12pt; font-weight: bold; margin: 0 0 4pt 0; }
+        h1 { font-size: 14pt; font-weight: bold; text-align: center; }
+        h2 { font-size: 12pt; font-weight: bold; }
         p  { text-align: justify; margin: 0 0 6pt 0; }
         .text-center { text-align: center !important; }
         .text-right  { text-align: right !important; }
-        .text-left   { text-align: left !important; }
         .bold { font-weight: bold; }
-        .underline { text-decoration: underline; }
 
-        table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; font-size: 10pt; }
-        table td, table th { border: 1px solid #000; padding: 5pt 7pt; vertical-align: top; }
-        table th { font-weight: bold; text-align: center; background-color: #f0f0f0; }
-        .no-border td, .no-border th { border: none !important; }
-        .no-border { border: none !important; }
+        /* Tabel default */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10pt;
+            font-size: 11pt;
+        }
+        table td, table th {
+            border: 1px solid #000;
+            padding: 4pt 6pt;
+            vertical-align: top;
+        }
+        table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .no-border, .no-border td, .no-border th {
+            border: none !important;
+        }
 
+        /* Page break */
         .page-break { page-break-after: always; }
 
+        /* Section heading A. B. C. dst */
         .section-title {
-            font-size: 11pt; font-weight: bold;
+            font-size: 12pt;
+            font-weight: bold;
             margin: 14pt 0 5pt 0;
         }
 
-        ol { margin: 3pt 0 8pt 18pt; padding: 0; }
+        /* List */
+        ol { margin: 4pt 0 8pt 20pt; padding: 0; }
         ol li { margin-bottom: 3pt; text-align: justify; }
 
-        /* Cover */
-        .cover-wrapper { text-align: center; padding-top: 30pt; }
-        .cover-title { font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; margin-bottom: 8pt; }
-        .cover-subtitle { font-size: 12pt; font-weight: bold; text-transform: uppercase; margin-bottom: 6pt; }
-        .cover-date { font-size: 11pt; margin-bottom: 30pt; }
-        .cover-logo-row { margin: 24pt 0; text-align: center; }
-        .cover-logo-row img { height: 90pt; margin: 0 16pt; }
-        .cover-bottom { margin-top: 60pt; text-align: center; }
+        /* Gambar tidak overflow */
+        img { max-width: 100%; }
 
-        /* Signature */
-        .signature-grid { width: 100%; border-collapse: collapse; }
-        .signature-grid td { border: none; text-align: center; vertical-align: top; padding: 0 8pt; }
-        .signature-box { display: block; height: 80pt; }
-        .signature-name { font-weight: bold; margin-top: 3pt; }
+        /* Cegah baris tabel terpotong */
+        tr { page-break-inside: avoid; }
 
-        /* Budget */
+        /* Currency */
         .currency { text-align: right; }
+
+        /* Tanda tangan - kotak kosong */
+        .signature-box { height: 55pt; display: block; }
+
+        /* No-break container */
+        .no-break { page-break-inside: avoid; }
     </style>
 </head>
 <body>
@@ -79,10 +95,27 @@
     <div class="page-break"></div>
     @include('proposal.pdf.partials.lembar-pengesahan')
 
-    @if($proposal->lampiranAttachments->count() > 0)
+    @if($proposal->lampiranAttachments->isNotEmpty())
         <div class="page-break"></div>
         @include('proposal.pdf.partials.lampiran')
     @endif
+
+    {{-- Footer: nomor halaman arab, center bawah, mulai halaman 2 (cover tanpa nomor) --}}
+    <script type="text/php">
+        if (isset($pdf)) {
+            $pdf->page_script('
+                if ($PAGE_NUM > 1) {
+                    $font = $fontMetrics->get_font("DejaVu Sans", "normal");
+                    $size = 9;
+                    $text = (string) $PAGE_NUM;
+                    $width = $fontMetrics->get_text_width($text, $font, $size);
+                    $x = ($pdf->get_width() - $width) / 2;
+                    $y = $pdf->get_height() - 30;
+                    $pdf->text($x, $y, $text, $font, $size);
+                }
+            ');
+        }
+    </script>
 
 </body>
 </html>
