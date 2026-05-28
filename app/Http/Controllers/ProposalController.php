@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProposalStoreRequest;
 use App\Models\Proposal;
 use App\Models\ProposalRundown;
 use App\Models\ProposalRisk;
@@ -12,10 +13,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Str;
 
 class ProposalController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $proposals = Proposal::where('user_id', auth()->id())
@@ -30,17 +34,8 @@ class ProposalController extends Controller
         return view('proposal.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(ProposalStoreRequest $request): RedirectResponse
     {
-        $request->validate([
-            'nama_kegiatan' => 'required|string|max:255',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'tahun' => 'required|integer',
-            'logo_organisasi' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-            'lampirans.*' => 'nullable|file|mimes:png,jpg,jpeg,pdf|max:2048',
-        ]);
-
         // Handle logo organisasi upload
         $logoPath = null;
         if ($request->hasFile('logo_organisasi')) {
@@ -107,14 +102,23 @@ class ProposalController extends Controller
         // Risks
         foreach ($request->input('risks', []) as $i => $row) {
             if (empty($row['uraian_kegiatan'])) continue;
+
+            // Hitung ulang tingkat risiko di server (jangan percaya nilai dari client):
+            // round(identifikasi × peluang ÷ 5), lalu clamp ke skala 1–5 → format "X/5".
+            $idNum = (int) explode('/', $row['identifikasi_bahaya'] ?? '1/5')[0];
+            $plNum = (int) explode('/', $row['peluang'] ?? '1/5')[0];
+            $idNum = max(1, min(5, $idNum));
+            $plNum = max(1, min(5, $plNum));
+            $tingkat = max(1, min(5, (int) round(($idNum * $plNum) / 5)));
+
             ProposalRisk::create([
                 'proposal_id'         => $proposal->id,
                 'urutan'              => $i,
                 'uraian_kegiatan'     => $row['uraian_kegiatan'],
-                'identifikasi_bahaya' => $row['identifikasi_bahaya'] ?? null,
-                'peluang'             => $row['peluang'] ?? null,
+                'identifikasi_bahaya' => $row['identifikasi_bahaya'] ?? '1/5',
+                'peluang'             => $row['peluang'] ?? '1/5',
                 'akibat'              => $row['akibat'] ?? null,
-                'tingkat_risiko'      => $row['tingkat_risiko'] ?? null,
+                'tingkat_risiko'      => $tingkat . '/5',
                 'pengendalian_risiko' => $row['pengendalian_risiko'] ?? null,
                 'penanggung_jawab'    => $row['penanggung_jawab'] ?? null,
             ]);
@@ -221,6 +225,7 @@ class ProposalController extends Controller
             ->setOptions([
                 'isRemoteEnabled'      => true,
                 'isHtml5ParserEnabled' => true,
+                'isPhpEnabled'         => true,
                 'defaultFont'          => 'dejavu serif',
                 'dpi'                  => 96,
                 'chroot'               => base_path(),
@@ -228,7 +233,7 @@ class ProposalController extends Controller
 
         $proposal->update(['status' => 'generated', 'generated_at' => now()]);
 
-        $filename = 'Proposal_' . Str::slug($proposal->nama_kegiatan) . '_' . now()->format('YmdHis') . '.pdf';
+        $filename = 'Proposal Kegiatan - ' . $proposal->nama_kegiatan . '.pdf';
 
         return $pdf->download($filename);
     }
