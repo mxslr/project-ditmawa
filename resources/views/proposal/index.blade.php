@@ -2,7 +2,7 @@
 @section('title', 'Proposal Saya')
 
 @section('content')
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
     <div>
         <h1 style="font-family:'Source Serif Pro',Georgia,serif; font-size:24px; font-weight:700; color:var(--ink-900); margin-bottom:4px;">
             Proposal Saya
@@ -43,7 +43,7 @@
                             </a>
                         </td>
                         <td style="padding:12px; font-size:13px; color:var(--ink-500); max-width:180px;">
-                            {{ $proposal->penyelenggara ?: '—' }}
+                            {{ $proposal->penyelenggara ?: '-' }}
                         </td>
                         <td style="padding:12px; font-size:13px; color:var(--ink-500); white-space:nowrap;">
                             {{ $proposal->tanggal_pelaksanaan }}
@@ -51,11 +51,11 @@
                         <td style="padding:12px; text-align:center;">
                             @if($proposal->status === 'generated')
                                 <span style="display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; background:#E8F5E9; color:#2E7D32;">
-                                    Generated
+                                    Sudah Dibuat
                                 </span>
                             @else
                                 <span style="display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; background:var(--surface-muted); color:var(--ink-500);">
-                                    Draft
+                                    Draf
                                 </span>
                             @endif
                         </td>

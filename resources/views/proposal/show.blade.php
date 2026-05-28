@@ -15,12 +15,12 @@
         </h1>
         <div class="flex items-center gap-3">
             @if($proposal->status === 'generated')
-                <span style="display:inline-block; padding:3px 12px; border-radius:20px; font-size:12px; font-weight:600; background:#E8F5E9; color:#2E7D32;">
-                    ✓ Generated
+                <span style="display:inline-flex; align-items:center; gap:5px; padding:3px 12px; border-radius:20px; font-size:12px; font-weight:600; background:#E8F5E9; color:#2E7D32;">
+                    <i data-lucide="check-circle" style="width:13px; height:13px;"></i> Sudah Dibuat
                 </span>
             @else
                 <span style="display:inline-block; padding:3px 12px; border-radius:20px; font-size:12px; font-weight:600; background:var(--surface-muted); color:var(--ink-500);">
-                    Draft
+                    Draf
                 </span>
             @endif
             <span style="font-size:13px; color:var(--ink-500);">Dibuat {{ $proposal->created_at->format('d M Y') }}</span>
@@ -46,17 +46,17 @@
     <div class="card">
         <h3 style="font-size:12px; font-weight:600; color:var(--ink-500); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px;">Identitas Kegiatan</h3>
         <dl class="space-y-2 text-sm">
-            <div><dt style="color:var(--ink-500);">Penyelenggara</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->penyelenggara ?: '—' }}</dd></div>
-            <div><dt style="color:var(--ink-500);">Afiliasi</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->afiliasi ?: '—' }}</dd></div>
-            <div><dt style="color:var(--ink-500);">Tema</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->tema_kegiatan ?: '—' }}</dd></div>
+            <div><dt style="color:var(--ink-500);">Penyelenggara</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->penyelenggara ?: '-' }}</dd></div>
+            <div><dt style="color:var(--ink-500);">Afiliasi</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->afiliasi ?: '-' }}</dd></div>
+            <div><dt style="color:var(--ink-500);">Tema</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->tema_kegiatan ?: '-' }}</dd></div>
         </dl>
     </div>
     <div class="card">
         <h3 style="font-size:12px; font-weight:600; color:var(--ink-500); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px;">Waktu & Tempat</h3>
         <dl class="space-y-2 text-sm">
             <div><dt style="color:var(--ink-500);">Tanggal</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->tanggal_pelaksanaan }}</dd></div>
-            <div><dt style="color:var(--ink-500);">Waktu</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->waktu_mulai ? \Carbon\Carbon::parse($proposal->waktu_mulai)->format('H:i') : '—' }} – {{ $proposal->waktu_selesai ? \Carbon\Carbon::parse($proposal->waktu_selesai)->format('H:i') : '—' }} WIB</dd></div>
-            <div><dt style="color:var(--ink-500);">Tempat</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->tempat_kegiatan ?: '—' }}</dd></div>
+            <div><dt style="color:var(--ink-500);">Waktu</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->waktu_mulai ? \Carbon\Carbon::parse($proposal->waktu_mulai)->format('H:i') : '-' }} – {{ $proposal->waktu_selesai ? \Carbon\Carbon::parse($proposal->waktu_selesai)->format('H:i') : '-' }} WIB</dd></div>
+            <div><dt style="color:var(--ink-500);">Tempat</dt><dd style="font-weight:600; color:var(--ink-900);">{{ $proposal->tempat_kegiatan ?: '-' }}</dd></div>
         </dl>
     </div>
     <div class="card">
@@ -155,7 +155,7 @@
                 <tr style="border-bottom:1px solid var(--surface-muted);">
                     <td style="padding:8px 10px;">{{ $b->keterangan }}</td>
                     <td style="padding:8px 10px; text-align:center;">{{ $b->kuantitas }}</td>
-                    <td style="padding:8px 10px; text-align:right;">{{ $b->harga_satuan ? 'Rp'.number_format($b->harga_satuan,0,',','.') : '—' }}</td>
+                    <td style="padding:8px 10px; text-align:right;">{{ $b->harga_satuan ? 'Rp'.number_format($b->harga_satuan,0,',','.') : '-' }}</td>
                     <td style="padding:8px 10px; text-align:right; font-weight:600;">Rp{{ number_format($b->total,0,',','.') }}</td>
                 </tr>
                 @endforeach
