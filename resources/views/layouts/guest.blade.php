@@ -4,16 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Masuk') — Direktorat Kemahasiswaan</title>
+    <title>@yield('title', 'Masuk') | Direktorat Kemahasiswaan</title>
+    <link rel="icon" type="image/webp" href="{{ asset('img/logo-telkom-iconweb.webp') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body x-data style="font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex;">
+<body x-data style="font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; height: 100dvh; overflow: hidden; display: flex;">
 
-    {{-- ===== KIRI: Area Form (40%) ===== --}}
-    <div class="flex flex-col justify-center" style="width: 40%; min-height: 100vh; padding: 48px 56px; background: #fff; box-shadow: 4px 0 24px rgba(0,0,0,0.04);">
+    {{-- ===== KIRI: Area Form (mobile: 100%, desktop: 40%) ===== --}}
+    <div class="flex flex-col justify-center w-full md:w-2/5 px-6 py-10 md:px-12 md:py-16"
+         style="height: 100dvh; overflow-y: auto; background: #fff; box-shadow: 4px 0 24px rgba(0,0,0,0.04);">
 
         {{-- Logo & Tagline --}}
-        <div class="mb-10">
+        <div class="mb-6">
             <a href="{{ route('home') }}" style="text-decoration:none; display: inline-block; margin-bottom: 16px;">
                 <img src="{{ asset('img/logo-direktorat.png') }}" alt="Direktorat Kemahasiswaan" style="height: 48px; width: auto;">
             </a>
@@ -42,17 +44,11 @@
 
     {{-- ===== KANAN: Panel Dekoratif (60%) ===== --}}
     <div class="hidden md:flex flex-col items-center justify-center flex-1 relative overflow-hidden"
-         style="background: linear-gradient(135deg, #E03A3E 0%, #C0392B 40%, #922B21 100%);">
+         style="background-image: url('{{ asset('img/bg_ditmawa.webp') }}'); background-size: cover; background-position: center;">
 
-        {{-- Pattern SVG --}}
-        <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-                    <circle cx="2" cy="2" r="1.5" fill="white" opacity="0.06"/>
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#dots)"/>
-        </svg>
+        {{-- Overlay merah-gelap di atas foto agar teks putih terbaca --}}
+        <div class="absolute inset-0"
+             style="background: linear-gradient(135deg, rgba(224,58,62,0.82) 0%, rgba(146,43,33,0.80) 45%, rgba(26,26,26,0.70) 100%);"></div>
 
         {{-- Konten teks tengah --}}
         <div class="relative z-10 text-center text-white px-12">
