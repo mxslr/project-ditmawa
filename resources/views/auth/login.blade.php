@@ -23,7 +23,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-5">
+    <form method="POST" action="{{ route('login') }}" class="space-y-5" novalidate>
         @csrf
 
         {{-- Email --}}
@@ -32,10 +32,12 @@
             <input id="email" type="email" name="email"
                    class="form-input @error('email') border-red-400 @enderror"
                    value="{{ old('email') }}"
-                   placeholder=""
                    required autofocus autocomplete="username">
             @error('email')
-                <p class="form-error">{{ $message }}</p>
+                <p class="field-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>{{ $message }}</span>
+                </p>
             @enderror
         </div>
 
@@ -47,7 +49,6 @@
                        :type="showPass ? 'text' : 'password'"
                        name="password"
                        class="form-input @error('password') border-red-400 @enderror"
-                       placeholder=""
                        required autocomplete="current-password"
                        style="padding-right: 44px;">
                 <button type="button"
@@ -58,7 +59,10 @@
                 </button>
             </div>
             @error('password')
-                <p class="form-error">{{ $message }}</p>
+                <p class="field-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>{{ $message }}</span>
+                </p>
             @enderror
         </div>
 
