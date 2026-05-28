@@ -1,4 +1,5 @@
 import './bootstrap';
+import './form-validator';
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 import { createIcons, icons } from 'lucide';
