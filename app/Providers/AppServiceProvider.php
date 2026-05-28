@@ -15,5 +15,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(\App\Models\Proposal::class, \App\Policies\ProposalPolicy::class);
+        Gate::policy(\App\Models\Lpj::class, \App\Policies\LpjPolicy::class);
     }
 }
