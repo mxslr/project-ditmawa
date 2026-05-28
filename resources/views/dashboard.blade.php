@@ -2,6 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
+<div class="overflow-x-hidden">
     {{-- Greeting --}}
     <div class="mb-8">
         <h1 style="font-family: 'Source Serif Pro', Georgia, serif; font-size: 28px; font-weight: 700; color: var(--ink-900); margin-bottom: 8px;">
@@ -66,52 +67,75 @@
 
     {{-- Dokumen Terakhir --}}
     <div class="card">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
             <h2 style="font-size: 16px; font-weight: 700; color: var(--ink-900);">
-                Proposal Terakhir
+                Dokumen Terakhir
             </h2>
-            <a href="{{ route('proposal.index') }}"
-               style="font-size: 13px; color: var(--telkom-red); text-decoration: none; font-weight: 600;">
-                Lihat Semua
-            </a>
+            @if($recentDocuments->count() > 0)
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('proposal.index') }}"
+                       style="font-size: 13px; color: var(--telkom-red); text-decoration: none; font-weight: 600;">
+                        Semua Proposal
+                    </a>
+                    <a href="{{ route('lpj.index') }}"
+                       style="font-size: 13px; color: var(--telkom-red); text-decoration: none; font-weight: 600;">
+                        Semua LPJ
+                    </a>
+                </div>
+            @endif
         </div>
 
-        @if($recentProposals->count() > 0)
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse;">
+        @if($recentDocuments->count() > 0)
+            <div class="overflow-x-auto w-full">
+                <table style="width: 100%; border-collapse: collapse; min-width: 560px;">
                     <thead>
                         <tr style="border-bottom: 2px solid var(--ink-300);">
                             <th style="text-align:left; padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--ink-500);">Nama Kegiatan</th>
-                            <th style="text-align:left; padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--ink-500);">Tanggal</th>
+                            <th style="text-align:left; padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--ink-500);">Tipe</th>
+                            <th style="text-align:left; padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--ink-500);">Tanggal Dibuat</th>
                             <th style="text-align:center; padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--ink-500);">Status</th>
                             <th style="text-align:right; padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--ink-500);">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($recentProposals as $proposal)
+                        @foreach($recentDocuments as $doc)
                         <tr style="border-bottom: 1px solid var(--surface-muted);">
                             <td style="padding: 10px; font-size: 14px; font-weight: 600; color: var(--ink-900);">
-                                <a href="{{ route('proposal.show', $proposal) }}"
-                                   style="color: var(--ink-900); text-decoration: none;"
-                                   onmouseover="this.style.color='var(--telkom-red)'"
-                                   onmouseout="this.style.color='var(--ink-900)'">
-                                    {{ $proposal->nama_kegiatan }}
-                                </a>
+                                <span class="flex items-center gap-2">
+                                    <i data-lucide="{{ $doc['icon'] }}" class="w-4 h-4 shrink-0" style="color: var(--telkom-red);"></i>
+                                    <a href="{{ $doc['show_url'] }}"
+                                       style="color: var(--ink-900); text-decoration: none;"
+                                       onmouseover="this.style.color='var(--telkom-red)'"
+                                       onmouseout="this.style.color='var(--ink-900)'">
+                                        {{ $doc['nama'] }}
+                                    </a>
+                                </span>
                             </td>
-                            <td style="padding: 10px; font-size: 13px; color: var(--ink-500);">
-                                {{ $proposal->tanggal_pelaksanaan }}
-                            </td>
-                            <td style="padding: 10px; text-align: center;">
-                                @if($proposal->status === 'generated')
-                                    <span style="display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; background:#E8F5E9; color:#2E7D32;">Generated</span>
+                            <td style="padding: 10px;">
+                                @if($doc['type'] === 'Proposal')
+                                    <span style="display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:600; background:var(--telkom-red-light); color:var(--telkom-red);">Proposal</span>
                                 @else
-                                    <span style="display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; background:var(--surface-muted); color:var(--ink-500);">Draft</span>
+                                    <span style="display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:600; background:#E3F2FD; color:#1565C0;">LPJ</span>
                                 @endif
                             </td>
-                            <td style="padding: 10px; text-align: right;">
-                                <a href="{{ route('proposal.generate', $proposal) }}"
-                                   style="font-size: 13px; font-weight: 600; color: var(--telkom-red); text-decoration: none;">
-                                    <i data-lucide="download" class="w-3.5 h-3.5 inline"></i> Download
+                            <td style="padding: 10px; font-size: 13px; color: var(--ink-500);">
+                                {{ $doc['tanggal'] }}
+                            </td>
+                            <td style="padding: 10px; text-align: center;">
+                                @if($doc['status'] === 'generated')
+                                    <span style="display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; background:#E8F5E9; color:#2E7D32;">Sudah Dibuat</span>
+                                @else
+                                    <span style="display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; background:var(--surface-muted); color:var(--ink-500);">Draf</span>
+                                @endif
+                            </td>
+                            <td style="padding: 10px; text-align: right; white-space: nowrap;">
+                                <a href="{{ $doc['download_url'] }}"
+                                   style="font-size: 13px; font-weight: 600; color: var(--telkom-red); text-decoration: none; margin-right: 14px;">
+                                    <i data-lucide="download" class="w-3.5 h-3.5 inline"></i> Unduh PDF
+                                </a>
+                                <a href="{{ $doc['show_url'] }}"
+                                   style="font-size: 13px; font-weight: 600; color: var(--ink-500); text-decoration: none;">
+                                    Lihat Detail
                                 </a>
                             </td>
                         </tr>
@@ -121,17 +145,28 @@
             </div>
         @else
             <div style="text-align: center; padding: 48px 0;">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                      style="background: var(--surface-muted);">
-                    <i data-lucide="file-x" class="w-6 h-6" style="color: var(--ink-300);"></i>
+                    <i data-lucide="folder-open" class="w-8 h-8" style="color: var(--ink-300);"></i>
                 </div>
-                <p style="font-size: 14px; color: var(--ink-500); margin-bottom: 4px;">
+                <p style="font-size: 15px; font-weight: 600; color: var(--ink-700); margin-bottom: 4px;">
                     Belum ada dokumen
                 </p>
-                <p style="font-size: 13px; color: var(--ink-300);">
-                    Mulai buat dokumen pertamamu menggunakan kartu di atas!
+                <p style="font-size: 13px; color: var(--ink-500); margin-bottom: 20px;">
+                    Mulai buat proposal atau LPJ baru.
                 </p>
+                <div class="flex items-center justify-center gap-3 flex-wrap">
+                    <a href="{{ route('proposal.create') }}" class="btn-primary">
+                        <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+                        Buat Proposal
+                    </a>
+                    <a href="{{ route('lpj.create') }}" class="btn-secondary">
+                        <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+                        Buat LPJ
+                    </a>
+                </div>
             </div>
         @endif
     </div>
+</div>
 @endsection
