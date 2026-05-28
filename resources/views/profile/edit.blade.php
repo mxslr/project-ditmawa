@@ -14,28 +14,30 @@
     {{-- Tab Navigation --}}
     <div x-data="{ activeTab: '{{ session('activeTab', 'info') }}' }" class="max-w-2xl">
 
-        {{-- Tab Buttons --}}
-        <div class="flex gap-1 mb-6 p-1 rounded-xl" style="background: var(--surface-muted); display: inline-flex;">
-            <button @click="activeTab = 'info'"
-                    :class="activeTab === 'info' ? 'bg-white shadow-sm' : ''"
-                    class="px-5 py-2 text-sm font-semibold rounded-lg transition-all"
-                    style="border: none; cursor: pointer;"
-                    :style="activeTab === 'info' ? 'color: var(--ink-900);' : 'color: var(--ink-500); background: transparent;'">
-                <span class="flex items-center gap-2">
-                    <i data-lucide="user" class="w-4 h-4"></i>
-                    Informasi Akun
-                </span>
-            </button>
-            <button @click="activeTab = 'password'"
-                    :class="activeTab === 'password' ? 'bg-white shadow-sm' : ''"
-                    class="px-5 py-2 text-sm font-semibold rounded-lg transition-all"
-                    style="border: none; cursor: pointer;"
-                    :style="activeTab === 'password' ? 'color: var(--ink-900);' : 'color: var(--ink-500); background: transparent;'">
-                <span class="flex items-center gap-2">
-                    <i data-lucide="lock" class="w-4 h-4"></i>
-                    Ubah Kata Sandi
-                </span>
-            </button>
+        {{-- Tab Buttons (scroll horizontal di mobile bila sempit) --}}
+        <div class="mb-6 overflow-x-auto">
+            <div class="inline-flex gap-1 p-1 rounded-xl" style="background: var(--surface-muted);">
+                <button @click="activeTab = 'info'"
+                        :class="activeTab === 'info' ? 'bg-white shadow-sm' : ''"
+                        class="px-4 sm:px-5 py-2 text-sm font-semibold rounded-lg transition-all whitespace-nowrap shrink-0"
+                        style="border: none; cursor: pointer;"
+                        :style="activeTab === 'info' ? 'color: var(--ink-900);' : 'color: var(--ink-500); background: transparent;'">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        Informasi Akun
+                    </span>
+                </button>
+                <button @click="activeTab = 'password'"
+                        :class="activeTab === 'password' ? 'bg-white shadow-sm' : ''"
+                        class="px-4 sm:px-5 py-2 text-sm font-semibold rounded-lg transition-all whitespace-nowrap shrink-0"
+                        style="border: none; cursor: pointer;"
+                        :style="activeTab === 'password' ? 'color: var(--ink-900);' : 'color: var(--ink-500); background: transparent;'">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                        Ubah Kata Sandi
+                    </span>
+                </button>
+            </div>
         </div>
 
         {{-- Tab: Informasi Akun --}}
@@ -48,9 +50,37 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('profile.update') }}" class="space-y-5">
+                <form method="POST" action="{{ route('profile.update') }}" class="space-y-5" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
+
+                    {{-- Foto Profil --}}
+                    <div x-data="{ preview: @js($user->avatar ? Storage::url($user->avatar) : null) }"
+                         class="flex items-center gap-5 pb-5"
+                         style="border-bottom: 1px solid var(--surface-muted);">
+                        <div style="width:96px; height:96px; border-radius:9999px; overflow:hidden; flex-shrink:0;
+                                    display:flex; align-items:center; justify-content:center;
+                                    background: var(--telkom-red-light); color: var(--telkom-red); font-size:36px; font-weight:700;">
+                            <template x-if="preview">
+                                <img :src="preview" alt="Foto profil" style="width:100%; height:100%; object-fit:cover;">
+                            </template>
+                            <template x-if="!preview">
+                                <span>{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                            </template>
+                        </div>
+                        <div>
+                            <label for="avatar" class="btn-secondary" style="cursor:pointer; padding: 8px 18px;">
+                                <i data-lucide="camera" class="w-4 h-4"></i>
+                                Ganti Foto
+                            </label>
+                            <input id="avatar" type="file" name="avatar" accept="image/png,image/jpeg" class="hidden"
+                                   @change="const f = $event.target.files[0]; if (f) { const r = new FileReader(); r.onload = e => preview = e.target.result; r.readAsDataURL(f); }">
+                            <p class="text-sm mt-2" style="color: var(--ink-500);">Format JPG atau PNG, maksimal 2 MB.</p>
+                            @error('avatar')
+                                <p class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div>
                         <label class="form-label" for="name">
@@ -79,14 +109,10 @@
                     </div>
 
                     <div>
-                        <label class="form-label" for="organization">
-                            UKM
-                            <span style="font-weight: 400; color: var(--ink-500);"></span>
-                        </label>
+                        <label class="form-label" for="organization">UKM</label>
                         <input id="organization" type="text" name="organization"
                                class="form-input @error('organization') border-red-400 @enderror"
                                value="{{ old('organization', $user->organization) }}"
-                               placeholder=""
                                required>
                         @error('organization')
                             <p class="form-error">{{ $message }}</p>
@@ -94,14 +120,10 @@
                     </div>
 
                     <div>
-                        <label class="form-label" for="position">
-                            Jabatan
-                            <span style="font-weight: 400; color: var(--ink-500);"></span>
-                        </label>
+                        <label class="form-label" for="position">Jabatan</label>
                         <input id="position" type="text" name="position"
                                class="form-input @error('position') border-red-400 @enderror"
                                value="{{ old('position', $user->position) }}"
-                               placeholder="Contoh: Ketua Pelaksana"
                                required>
                         @error('position')
                             <p class="form-error">{{ $message }}</p>
@@ -109,14 +131,10 @@
                     </div>
 
                     <div>
-                        <label class="form-label" for="phone">
-                            No. Telepon
-                            <span style="font-weight: 400; color: var(--ink-500);"></span>
-                        </label>
+                        <label class="form-label" for="phone">No. Telepon</label>
                         <input id="phone" type="text" name="phone"
                                class="form-input @error('phone') border-red-400 @enderror"
                                value="{{ old('phone', $user->phone) }}"
-                               placeholder=""
                                required>
                         @error('phone')
                             <p class="form-error">{{ $message }}</p>
@@ -154,7 +172,6 @@
                                    :type="show ? 'text' : 'password'"
                                    name="current_password"
                                    class="form-input @error('current_password') border-red-400 @enderror"
-                                   placeholder=""
                                    style="padding-right: 44px;">
                             <button type="button" @click="show = !show"
                                     style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--ink-500); padding:4px;">
@@ -173,7 +190,6 @@
                                    :type="show ? 'text' : 'password'"
                                    name="password"
                                    class="form-input @error('password') border-red-400 @enderror"
-                                   placeholder="Minimal 8 karakter"
                                    style="padding-right: 44px;">
                             <button type="button" @click="show = !show"
                                     style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--ink-500); padding:4px;">
@@ -183,6 +199,7 @@
                         @error('password')
                             <p class="form-error">{{ $message }}</p>
                         @enderror
+                        <p class="text-sm mt-1" style="color: var(--ink-500);">Minimal 8 karakter.</p>
                     </div>
 
                     <div x-data="{ show: false }">
@@ -192,7 +209,6 @@
                                    :type="show ? 'text' : 'password'"
                                    name="password_confirmation"
                                    class="form-input"
-                                   placeholder=""
                                    style="padding-right: 44px;">
                             <button type="button" @click="show = !show"
                                     style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--ink-500); padding:4px;">
